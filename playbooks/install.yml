@@ -1,0 +1,5 @@
+---
+- name: Install amq_broker  AMQ01-MIT517
+  hosts: amq
+  roles:
+    - role: redhat.amq_broker.amq_broker

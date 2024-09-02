@@ -1,0 +1,9 @@
+[all]
+amq1
+amq2
+amq3
+
+[amq]
+amq1
+amq2
+amq3

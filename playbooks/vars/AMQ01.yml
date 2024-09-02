@@ -1,0 +1,11 @@
+amq_broker_port_artemis: 50201
+amq_broker_port: 50321
+amq_broker_port_ssl: 50301
+amq_broker_http_port: 50211
+amq_broker_cluster_connections:
+  - name: master-AMQ01
+  - name: slave-AMQ01
+  - name: master-AMQ02
+  - name: slave-AMQ02
+  - name: master-AMQ03
+  - name: slave-AMQ03

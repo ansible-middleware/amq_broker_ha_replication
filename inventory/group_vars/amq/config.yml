@@ -1,0 +1,28 @@
+---
+amq_broker_host: "{{ inventory_hostname }}"
+
+amq_broker_console_bind_url: "http://0.0.0.0:{{ amq_broker_http_port }}"
+amq_broker_cors_strict_checking: false
+
+amq_broker_prometheus_enabled: false
+
+amq_broker_ha_enabled: true
+amq_broker_nio_enabled: true
+
+amq_broker_tls_enabled: false
+
+amq_broker_acceptors:
+  - name: "{{ amq_broker_name_role }}"
+    bind_address: "0.0.0.0"
+    bind_port: "{{ amq_broker_port }}"
+    parameters:
+      tcpSendBufferSize: 1048576
+      tcpReceiveBufferSize: 1048576
+      amqpMinLargeMessageSize: 102400
+      protocols: CORE,AMQP
+      useEpoll: true
+      amqpCredits: 1000
+      amqpLowCredits: 300
+      amqpDuplicateDetection: true
+      supportAdvisory: false
+      suppressInternalManagementObjects: false

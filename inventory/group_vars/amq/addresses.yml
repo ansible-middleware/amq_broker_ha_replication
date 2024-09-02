@@ -1,0 +1,11 @@
+---
+amq_broker_addresses:
+  - name: DLQ
+    anycast:
+      - name: DLQ
+  - name: ExpiryQueue
+    anycast:
+      - name: ExpiryQueue
+  - name: TEST
+    anycast:
+      - name: TEST
