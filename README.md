@@ -4,19 +4,19 @@ Provision and deploy via Ansible a Red Hat AMQ broker cluster with replication o
 
 ### Use case for collection
 
-The primary use case of the amq_broker_ha_replication collection is to install Red Hat AMQ Broker with high availability (HA) across multiple AWS virtual machines. This ensures that the messaging service is resilient, fault-tolerant, and capable of serving users even in the event of a failure.
+The primary use case of the amq_broker_ha_replication collection is to install Red Hat AMQ Broker with high availability (HA) across multiple virtual machines. This ensures that the messaging service is resilient, fault-tolerant, and capable of serving users even in the event of a failure.
 
 ### 0. prerequisites
 
-* A region that will host the authentication service (ie. us-east-1 or us-west-2)
-* An AWS account with permissions on `ec2` on said regions with default profile in $HOME/.aws/credentials that will be used to provision ec2 compute nodes
-* TLS certificate for the desired brokers to have encrypted communication
+* three virtual machines or containers with proper name resolution and network access.
+* keypair ssh access to the virtual machines, with privilege escalation
+* ansible-core >= 2.15
 
 ### 1. create ansible.cfg
 
 ```
 [defaults]
-remote_user=ec2-user
+remote_user=<ssh_user_account>
 private_key_file=<path_to_private_key>
 host_key_checking=False
 gathering=smart
@@ -34,7 +34,9 @@ auth_url=https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-conn
 token=<automation_hub_token>
 ```
 
-Set the `token` to the value you get after authentication on automation hub.
+1. Set the `token` to the value you get after authentication on automation hub.
+2. Set <ssh_user_account> to the posix account that can ssh into the target virtual machines
+3. Set <path_to_private_key> to the absolute path to the private key used for ssh
 
 
 ### 2. install dependencies
@@ -45,7 +47,7 @@ The following command will download and install the dependencies.
     # ansible-galaxy collection install -r requirements.yml
 
 
-### 3. create key pair
+### 3. inventory
 
 This key pair will be used by ansible to connect to the EC2 instances.
 
@@ -55,14 +57,14 @@ This key pair will be used by ansible to connect to the EC2 instances.
 
 ### 4. edit the configuration
 
+#### install options
 
-### run the infra provisioning
+#### service options
 
-Inside playbooks/roles path we have infra-up.yml and infra-down.yml run both according to you need.
+#### run the deployment of amq_broker
 
-### run the deployment of amq_broker
+Execute the install.yml playbook to deploy the amq_broker setup.
 
-Inside playbooks/roles path we have deploy.yml playbook to deploy data_grid and rhbk.
 
 ## License
 
