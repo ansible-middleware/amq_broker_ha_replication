@@ -1,0 +1,42 @@
+---
+namespace: infra
+name: amq_broker_ha_replication
+version: "1.0.0"
+readme: README.md
+authors:
+  - Guido Grazioli <ggraziol@redhat.com>
+description: Deploy a replication cluster of AMQ Broker instances
+license_file: "LICENSE"
+tags:
+  - activemq
+  - messaging
+  - broker
+  - redhat
+  - rhel
+  - application
+  - infrastructure
+  - java
+  - runtimes
+  - middleware
+  - amq
+  - a4mw
+dependencies:
+  "redhat.amq_broker": ">=2.2.5"
+  "ansible.posix": ">=1.4.0"
+repository: https://github.com/ansible-middleware/amq_broker_ha_replication
+documentation: https://ansible-middleware.github.io/amq_broker_ha_replication
+homepage: https://github.com/ansible-middleware/amq_broker_ha_replication
+issues: https://github.com/ansible-middleware/amq_broker_ha_replication/issues
+build_ignore:
+  - .gitignore
+  - .github
+  - .ansible-lint
+  - .yamllint
+  - '*.tar.gz'
+  - '*.zip'
+  - molecule
+  - changelogs
+  - docs/_gh_include
+  - docs/conf.py
+  - docs/roles.rst.template
+  - docs/requirements.yml
