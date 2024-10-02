@@ -4,8 +4,6 @@ amq_broker_host: "{{ inventory_hostname }}"
 amq_broker_console_bind_url: "http://0.0.0.0:{{ amq_broker_http_port }}"
 amq_broker_cors_strict_checking: false
 
-amq_broker_cluster_discovery: provided
-
 amq_broker_ha_enabled: true
 amq_broker_replication: true
 amq_broker_ha_vote_on_replication_failure: true
@@ -26,17 +24,17 @@ amq_broker_http_port: "{{ amq_broker_base_http_port + amq_broker_name_index * am
 
 amq_broker_connectors:
   - name: primary_amq_service_A
-    address: amq_host_1
+    address: "{{ groups['amq_service_A'] | first }}"
   - name: backup_amq_service_A
-    address: amq_host_2
+    address: "{{ groups['amq_service_A'] | last }}"
   - name: primary_amq_service_B
-    address: amq_host_2
+    address: "{{ groups['amq_service_B'] | first }}"
   - name: backup_amq_service_B
-    address: amq_host_3
+    address: "{{ groups['amq_service_B'] | last }}"
   - name: primary_amq_service_C
-    address: amq_host_3
+    address: "{{ groups['amq_service_C'] | first }}"
   - name: backup_amq_service_C
-    address: amq_host_1
+    address: "{{ groups['amq_service_C'] | last }}"
 
 amq_broker_acceptors:
   - name: "{{ amq_broker_name_role }}"
