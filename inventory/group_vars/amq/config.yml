@@ -4,12 +4,39 @@ amq_broker_host: "{{ inventory_hostname }}"
 amq_broker_console_bind_url: "http://0.0.0.0:{{ amq_broker_http_port }}"
 amq_broker_cors_strict_checking: false
 
-amq_broker_prometheus_enabled: false
+amq_broker_cluster_discovery: provided
 
 amq_broker_ha_enabled: true
-amq_broker_nio_enabled: true
+amq_broker_replication: true
+amq_broker_ha_vote_on_replication_failure: true
+amq_broker_ha_quorum_size: 2
 
-amq_broker_tls_enabled: false
+amq_broker_nio_enabled: true
+amq_broker_prometheus_enabled: false
+
+amq_broker_tls_enabled: true
+amq_broker_tls_keystore_path: certificate.p12
+amq_broker_tls_keystore_password: securepass
+amq_broker_tls_keystore_dest: "{{ amq_broker_dest }}/{{ amq_broker_instance_name }}/etc/certificate.p12"
+
+amq_broker_port_artemis: "{{ amq_broker_base_port_artemis + amq_broker_name_index * amq_broker_base_port_offset }}"
+amq_broker_port: "{{ amq_broker_base_port + amq_broker_name_index * amq_broker_base_port_offset }}"
+amq_broker_port_ssl: "{{ amq_broker_base_port_ssl + amq_broker_name_index * amq_broker_base_port_offset }}"
+amq_broker_http_port: "{{ amq_broker_base_http_port + amq_broker_name_index * amq_broker_base_port_offset }}"
+
+amq_broker_connectors:
+  - name: primary_amq_service_A
+    address: amq_host_1
+  - name: backup_amq_service_A
+    address: amq_host_2
+  - name: primary_amq_service_B
+    address: amq_host_2
+  - name: backup_amq_service_B
+    address: amq_host_3
+  - name: primary_amq_service_C
+    address: amq_host_3
+  - name: backup_amq_service_C
+    address: amq_host_1
 
 amq_broker_acceptors:
   - name: "{{ amq_broker_name_role }}"
@@ -26,3 +53,14 @@ amq_broker_acceptors:
       amqpDuplicateDetection: true
       supportAdvisory: false
       suppressInternalManagementObjects: false
+
+amq_broker_addresses:
+  - name: DLQ
+    anycast:
+      - name: DLQ
+  - name: ExpiryQueue
+    anycast:
+      - name: ExpiryQueue
+  - name: TEST
+    anycast:
+      - name: TEST

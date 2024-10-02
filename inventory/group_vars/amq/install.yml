@@ -1,1 +1,19 @@
 ---
+amq_broker_dest: /opt/amq_broker
+amq_broker_version: '7.12.0'
+
+amq_broker_ha_role: "{{ 'primary' if amq_role.split('_')[0] == service.split('_')[2] else 'backup' }}"
+amq_broker_ha_deprecated_role: "{{ 'slave' if amq_broker_ha_role == 'backup' else 'master' }}"
+amq_broker_replication: true
+amq_broker_replicated: "{{ amq_broker_ha_role == 'backup' }}"
+amq_broker_name: "{{ service }}"
+amq_broker_name_short: "{{ service.split('_')[2] }}"
+amq_broker_name_index: "{{ (1 if amq_broker_name_short == 'A' else 2 if amq_broker_name_short == 'B' else 3 ) }}"
+amq_broker_name_role: "{{ amq_broker_ha_role }}_{{ amq_broker_name }}"
+amq_broker_instance_name: "{{ amq_broker_name }}"
+
+amq_broker_base_port: 60100
+amq_broker_base_port_artemis: 60200
+amq_broker_base_http_port: 60210
+amq_broker_base_port_ssl: 60300
+amq_broker_base_port_offset: 1

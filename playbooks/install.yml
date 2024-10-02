@@ -1,5 +1,21 @@
 ---
-- name: Install amq_broker  AMQ01-MIT517
-  hosts: amq
+- name: Install amq_broker service A
+  hosts: "{{ service }}"
+  vars:
+    service: amq_service_A
+  roles:
+    - role: redhat.amq_broker.amq_broker
+
+- name: Install amq_broker service B
+  hosts: "{{ service }}"
+  vars:
+    service: amq_service_B
+  roles:
+    - role: redhat.amq_broker.amq_broker
+
+- name: Install amq_broker service C
+  hosts: "{{ service }}"
+  vars:
+    service: amq_service_C
   roles:
     - role: redhat.amq_broker.amq_broker

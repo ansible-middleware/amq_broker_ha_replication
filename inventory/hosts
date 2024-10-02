@@ -1,9 +1,21 @@
 [all]
-amq1
-amq2
-amq3
+amq_host_1 amq_role=A_C ansible_host=
+amq_host_2 amq_role=B_A ansible_host=
+amq_host_3 amq_role=C_B ansible_host=
 
 [amq]
-amq1
-amq2
-amq3
+amq_host_1
+amq_host_2
+amq_host_3
+
+[amq_service_A]
+amq_host_1
+amq_host_2
+
+[amq_service_B]
+amq_host_2
+amq_host_3
+
+[amq_service_C]
+amq_host_3
+amq_host_1
