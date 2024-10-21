@@ -1,5 +1,54 @@
 ---
 - name: Install amq_broker service A
+  hosts: all
+  tasks:
+    - name: "Prepare connectors"
+      ansible.builtin.set_fact:
+        amq_broker_connectors:
+          - name: primary_amq_service_A
+            address: >
+              {{ (lookup('ansible.utils.to_paths', hostvars) | dict2items |
+                  selectattr('key', 'match', '.*amq_role$') |
+                  selectattr('value', 'match', 'A_.') |
+                  first)['key'] | regex_replace('[.]amq_role$', '') }}
+            port: "{{ amq_broker_port_A }}"
+          - name: backup_amq_service_A
+            address: >
+              {{ (lookup('ansible.utils.to_paths', hostvars) | dict2items |
+                  selectattr('key', 'match', '.*amq_role$') |
+                  selectattr('value', 'match', '._A') |
+                  first)['key'] | regex_replace('[.]amq_role$', '') }}
+            port: "{{ amq_broker_port_A }}"
+          - name: primary_amq_service_B
+            address: >
+              {{ (lookup('ansible.utils.to_paths', hostvars) | dict2items |
+                  selectattr('key', 'match', '.*amq_role$') |
+                  selectattr('value', 'match', 'B_.') |
+                  first)['key'] | regex_replace('[.]amq_role$', '') }}
+            port: "{{ amq_broker_port_B }}"
+          - name: backup_amq_service_B
+            address: >
+              {{ (lookup('ansible.utils.to_paths', hostvars) | dict2items |
+                  selectattr('key', 'match', '.*amq_role$') |
+                  selectattr('value', 'match', '._B') |
+                  first)['key'] | regex_replace('[.]amq_role$', '') }}
+            port: "{{ amq_broker_port_B }}"
+          - name: primary_amq_service_C
+            address: >
+              {{ (lookup('ansible.utils.to_paths', hostvars) | dict2items |
+                  selectattr('key', 'match', '.*amq_role$') |
+                  selectattr('value', 'match', 'C_.') |
+                  first)['key'] | regex_replace('[.]amq_role$', '') }}
+            port: "{{ amq_broker_port_C }}"
+          - name: backup_amq_service_C
+            address: >
+              {{ (lookup('ansible.utils.to_paths', hostvars) | dict2items |
+                  selectattr('key', 'match', '.*amq_role$') |
+                  selectattr('value', 'match', '._C') |
+                  first)['key'] | regex_replace('[.]amq_role$', '') }}
+            port: "{{ amq_broker_port_C }}"
+
+- name: Install amq_broker service A
   hosts: "{{ service }}"
   vars:
     service: amq_service_A

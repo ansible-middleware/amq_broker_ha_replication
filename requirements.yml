@@ -2,4 +2,5 @@
 collections:
   - name: redhat.amq_broker
   - name: ansible.posix
+  - name: ansible.utils
 

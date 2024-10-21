@@ -1,0 +1,8 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: "Ensure sudo installed"
+      ansible.builtin.yum:
+        name: sudo
+      when: ansible_user_id == 'root'
