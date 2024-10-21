@@ -17,24 +17,14 @@ amq_broker_tls_keystore_path: certificate.p12
 amq_broker_tls_keystore_password: securepass
 amq_broker_tls_keystore_dest: "{{ amq_broker_dest }}/{{ amq_broker_instance_name }}/etc/certificate.p12"
 
-amq_broker_port_artemis: "{{ amq_broker_base_port_artemis + amq_broker_name_index * amq_broker_base_port_offset }}"
-amq_broker_port: "{{ amq_broker_base_port + amq_broker_name_index * amq_broker_base_port_offset }}"
-amq_broker_port_ssl: "{{ amq_broker_base_port_ssl + amq_broker_name_index * amq_broker_base_port_offset }}"
-amq_broker_http_port: "{{ amq_broker_base_http_port + amq_broker_name_index * amq_broker_base_port_offset }}"
+amq_broker_port: "{{ amq_broker_base_port + amq_broker_name_index | int * amq_broker_base_port_offset }}"
+amq_broker_port_A: "{{ amq_broker_base_port + 1 * amq_broker_base_port_offset }}"
+amq_broker_port_B: "{{ amq_broker_base_port + 2 * amq_broker_base_port_offset }}"
+amq_broker_port_C: "{{ amq_broker_base_port + 3 * amq_broker_base_port_offset }}"
+amq_broker_http_port: "{{ amq_broker_base_http_port + amq_broker_name_index | int * amq_broker_base_port_offset }}"
 
-amq_broker_connectors:
-  - name: primary_amq_service_A
-    address: "{{ groups['amq_service_A'] | first }}"
-  - name: backup_amq_service_A
-    address: "{{ groups['amq_service_A'] | last }}"
-  - name: primary_amq_service_B
-    address: "{{ groups['amq_service_B'] | first }}"
-  - name: backup_amq_service_B
-    address: "{{ groups['amq_service_B'] | last }}"
-  - name: primary_amq_service_C
-    address: "{{ groups['amq_service_C'] | first }}"
-  - name: backup_amq_service_C
-    address: "{{ groups['amq_service_C'] | last }}"
+amq_broker_systemd_wait_for_port_number: "{{ amq_broker_http_port }}"
+amq_broker_cluster_discovery: provided
 
 amq_broker_acceptors:
   - name: "{{ amq_broker_name_role }}"

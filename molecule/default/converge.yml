@@ -1,0 +1,29 @@
+---
+- name: Debug
+  hosts: "{{ service }}"
+  vars:
+    service: amq_service_B
+  tasks:
+    # - name: Primary_amq_service_B
+    #   ansible.builtin.set_fact:
+    #     primary_amq_service_b: >-
+    #       {{ (lookup('ansible.utils.to_paths', hostvars) | dict2items |
+    #          selectattr('key', 'match', '.*amq_role$') |
+    #          selectattr('value', 'match', 'B_.') |
+    #          first)['key'] | regex_replace('[.]amq_role$', '') }}
+    # - name: Primary_amq_service_A
+    #   ansible.builtin.set_fact:
+    #     primary_amq_service_a: >-
+    #       {{ (lookup('ansible.utils.to_paths', hostvars) | dict2items |
+    #          selectattr('key', 'match', '.*amq_role$') |
+    #          selectattr('value', 'match', 'A_.') |
+    #          first)['key'] | regex_replace('[.]amq_role$', '') }}
+    - name: "Debug"
+      ansible.builtin.debug:
+        msg: "{{ groups[service] }}"
+    - name: "Debug"
+      ansible.builtin.debug:
+        msg: "{{ amq_broker_name_role }} {{ amq_broker_ha_role }} {{ amq_broker_port }}"
+
+- name: Import collection playbook
+  ansible.builtin.import_playbook: ../../playbooks/install.yml

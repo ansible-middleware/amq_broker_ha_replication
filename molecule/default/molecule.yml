@@ -1,0 +1,77 @@
+---
+driver:
+  name: docker
+platforms:
+  - name: amqhost1
+    image: registry.access.redhat.com/ubi9/ubi-init:latest
+    pre_build_image: true
+    privileged: true
+    command: "/usr/sbin/init"
+    groups:
+      - amq
+      - amq_service_A
+      - amq_service_C
+    networks:
+      - name: amq
+    tmpfs:
+      - /run
+      - /tmp
+  - name: amqhost2
+    image: registry.access.redhat.com/ubi9/ubi-init:latest
+    pre_build_image: true
+    privileged: true
+    command: "/usr/sbin/init"
+    groups:
+      - amq
+      - amq_service_B
+      - amq_service_A
+    networks:
+      - name: amq
+    tmpfs:
+      - /run
+      - /tmp
+  - name: amqhost3
+    image: registry.access.redhat.com/ubi9/ubi-init:latest
+    pre_build_image: true
+    privileged: true
+    command: "/usr/sbin/init"
+    groups:
+      - amq
+      - amq_service_C
+      - amq_service_B
+    networks:
+      - name: amq
+    tmpfs:
+      - /run
+      - /tmp
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      interpreter_python: auto_silent
+    ssh_connection:
+      pipelining: false
+  playbooks:
+    prepare: prepare.yml
+    converge: converge.yml
+    verify: verify.yml
+  inventory:
+    links:
+      group_vars: ../../inventory/group_vars/
+      host_vars: ./host_vars/
+  env:
+    ANSIBLE_FORCE_COLOR: "true"
+verifier:
+  name: ansible
+scenario:
+  test_sequence:
+    - cleanup
+    - destroy
+    - create
+    - prepare
+    - converge
+    - idempotence
+    - side_effect
+    - verify
+    - cleanup
+    - destroy
